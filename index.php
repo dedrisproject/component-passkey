@@ -88,6 +88,19 @@ $e = fn(string $s) => htmlspecialchars($s, ENT_QUOTES, 'UTF-8');
     </section>
     <?php endif; ?>
 
+    <!-- ============ How passkeys work ============ -->
+    <section class="card">
+      <h2>💡 <?= $e(t('howit.title')) ?></h2>
+      <div class="faq">
+        <?php foreach (['q1', 'q2', 'q3', 'q4'] as $q): ?>
+        <details<?= $q === 'q1' ? ' open' : '' ?>>
+          <summary><?= $e(t("howit.$q.title")) ?></summary>
+          <p><?= t("howit.$q.text") ?></p>
+        </details>
+        <?php endforeach; ?>
+      </div>
+    </section>
+
     <!-- ============ Section 3: snippet download ============ -->
     <section class="card">
       <h2><?= $e(t('download.title')) ?></h2>

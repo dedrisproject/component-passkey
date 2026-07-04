@@ -57,6 +57,13 @@ Premi **Scarica snippet** nella demo (o leggi [INTEGRATION.md](INTEGRATION.md)) 
 - sostituire lo storage su file JSON con una tabella di database,
 - collegare i due pulsanti (`Crea passkey`, `Accedi con passkey`) alle tue pagine.
 
+## Le passkey in breve
+
+- **Per crearla devi essere già loggato.** La passkey si aggancia a un account esistente: l'utente accede (o si registra) nel modo classico e poi aggiunge una passkey dal profilo. Per questo la demo parte con te già loggato.
+- **La chiave privata vive sul tuo dispositivo** — nel chip sicuro del notebook/smartphone o nel password manager (iCloud Keychain, Google Password Manager, 1Password…). Non lo lascia mai: il server salva solo la chiave pubblica, quindi non c'è niente da rubare e il phishing non funziona (la chiave firma solo per il suo dominio).
+- **Altri dispositivi:** se la passkey è sincronizzata nel cloud la ritrovi sugli altri tuoi dispositivi dello stesso ecosistema. Se è salvata solo sul notebook, dallo smartphone non puoi usarla — accedi con la password e registra una seconda passkey dal telefono (un account, tante passkey), oppure usa il flusso QR code "usa un altro dispositivo" del browser.
+- **Account solo-passkey:** una volta registrata almeno una passkey puoi disattivare del tutto l'accesso con username e password per quell'account — nella tua integrazione è solo un flag che nasconde il form classico. Prima assicurati che l'utente abbia una seconda passkey o una via di recupero.
+
 ## Note di sicurezza
 
 - Le challenge sono casuali, monouso e validate lato server.

@@ -57,6 +57,13 @@ Press **Download snippet** in the demo (or read [INTEGRATION.md](INTEGRATION.md)
 - replace the JSON-file storage with a database table,
 - wire the two buttons (`Create passkey`, `Sign in with passkey`) into your pages.
 
+## Passkeys in a nutshell
+
+- **You must already be logged in to create one.** A passkey attaches to an existing account: the user signs in (or signs up) the classic way, then adds a passkey from their profile. That is why the demo starts with you already logged in.
+- **The private key lives on your device** — in the notebook/smartphone secure chip or in your password manager (iCloud Keychain, Google Password Manager, 1Password…). It never leaves it: the server stores only the public key, so there is nothing to steal and phishing does not work (the key only signs for its own domain).
+- **Other devices:** if the passkey is cloud-synced you will find it on your other devices in the same ecosystem. If it is stored only on your notebook, your smartphone cannot use it — sign in with the password and register a second passkey from the phone (one account, many passkeys), or use the browser's QR-code "use another device" flow.
+- **Passkey-only accounts:** once at least one passkey is registered you can disable username/password login for that account entirely — in your integration it is just a flag that hides the classic form. Make sure the user has a second passkey or a recovery path first.
+
 ## Security notes
 
 - Challenges are random, single-use and validated server-side.

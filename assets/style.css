@@ -128,6 +128,28 @@ ul.passkey-list li {
 ul.passkey-list code { font-family: var(--mono); color: var(--accent); font-size: .78rem; }
 ul.passkey-list .meta { color: var(--muted); }
 
+/* how-it-works faq */
+.faq details {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: .6rem .9rem;
+  margin-bottom: .5rem;
+}
+.faq summary {
+  cursor: pointer;
+  font-size: .9rem;
+  font-weight: 600;
+}
+.faq summary:hover { color: var(--accent); }
+.faq details[open] summary { color: var(--accent); }
+.faq details p {
+  margin: .6rem 0 .2rem;
+  font-size: .85rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+.faq details p strong { color: var(--text); }
+
 /* debug console */
 .debug-panel {
   position: sticky;
