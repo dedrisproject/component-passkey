@@ -65,6 +65,12 @@ Press **Download snippet** in the demo (or read [INTEGRATION.md](INTEGRATION.md)
 - Sign counter is enforced when the authenticator provides one.
 - The demo stores credentials in `data/credentials.json` — fine for trying it out, use a DB in production.
 
+## Troubleshooting
+
+- **Passkey created but not listed after reload** → the `data/` directory is not writable by the web server. Fix: `chmod 775 data` (or `chown www-data data` depending on your setup). The debug console shows the exact error before the OS dialog even opens.
+- **The OS dialog never opens** → WebAuthn requires HTTPS (or `http://localhost` in development) and a browser with passkey support.
+- The debug console persists across page reloads (sessionStorage) — check it first, every client and server step is traced there.
+
 ## Project structure
 
 ```

@@ -21,6 +21,7 @@
 - PHP **8.0+** with `ext-openssl` (standard).
 - **HTTPS** — WebAuthn only works on secure origins. `http://localhost` is the only exception, useful for development.
 - A modern browser with a platform authenticator (Touch ID, Face ID, Windows Hello, Android) or a security key.
+- If you keep the JSON-file storage, the `data/` directory must be **writable by the web server** (`chmod 775 data` or `chown www-data data`).
 
 ### Steps
 
@@ -75,6 +76,7 @@
 - PHP **8.0+** con `ext-openssl` (standard).
 - **HTTPS** — WebAuthn funziona solo su origin sicure. L'unica eccezione è `http://localhost`, utile in sviluppo.
 - Un browser moderno con un authenticator di piattaforma (Touch ID, Face ID, Windows Hello, Android) o una chiave di sicurezza.
+- Se mantieni lo storage su file JSON, la cartella `data/` deve essere **scrivibile dal web server** (`chmod 775 data` oppure `chown www-data data`).
 
 ### Passaggi
 

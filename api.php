@@ -46,6 +46,10 @@ try {
 
         case 'register-options': {
             $user = currentUser() ?? $fail('Not logged in', 401);
+            if (!$store->isWritable()) {
+                $dbg('  ✘ storage is not writable by PHP: ' . CREDENTIAL_FILE);
+                $fail('Credential storage is not writable — make the data/ directory writable by the web server (e.g. chmod 775 data)', 500);
+            }
             $challenge = WebAuthnHelper::createChallenge();
             $_SESSION['register_challenge'] = $challenge;
 
@@ -216,6 +220,9 @@ try {
 } catch (WebAuthnException $e) {
     $dbg('  ✘ ' . $e->getMessage());
     $respond(['ok' => false, 'error' => $e->getMessage()], 400);
+} catch (RuntimeException $e) { // e.g. storage write failure — surface the real reason
+    $dbg('  ✘ ' . $e->getMessage());
+    $respond(['ok' => false, 'error' => $e->getMessage()], 500);
 } catch (Throwable $e) {
     $dbg('  ✘ internal error: ' . $e->getMessage());
     $respond(['ok' => false, 'error' => 'Internal error'], 500);

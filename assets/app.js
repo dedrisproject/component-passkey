@@ -8,19 +8,31 @@
   const I18N = window.PASSKEY_I18N || {};
   const t = (key) => I18N[key] || key;
 
-  // ---------- debug console ----------
+  // ---------- debug console (persisted across reloads in sessionStorage) ----------
 
   const consoleEl = document.getElementById('debug-console');
+  const LOG_KEY = 'passkey-debug-log';
+
+  function loadHistory() {
+    try { return JSON.parse(sessionStorage.getItem(LOG_KEY)) || []; } catch { return []; }
+  }
+
+  function renderLine(entry) {
+    const line = document.createElement('div');
+    line.className = 'dbg-line dbg-' + entry.kind;
+    line.innerHTML = '<span class="dbg-time">' + entry.time + '</span> ';
+    line.appendChild(document.createTextNode(entry.msg));
+    consoleEl.appendChild(line);
+  }
 
   function log(message, kind = 'info') {
     if (!consoleEl) return;
-    const line = document.createElement('div');
-    line.className = 'dbg-line dbg-' + kind;
-    const time = new Date().toLocaleTimeString();
-    line.innerHTML = '<span class="dbg-time">' + time + '</span> ';
-    line.appendChild(document.createTextNode(message));
-    consoleEl.appendChild(line);
+    const entry = { time: new Date().toLocaleTimeString(), kind, msg: message };
+    renderLine(entry);
     consoleEl.scrollTop = consoleEl.scrollHeight;
+    const history = loadHistory();
+    history.push(entry);
+    try { sessionStorage.setItem(LOG_KEY, JSON.stringify(history.slice(-200))); } catch {}
   }
 
   function logServerDebug(payload) {
@@ -28,11 +40,18 @@
   }
 
   document.getElementById('debug-clear')?.addEventListener('click', () => {
+    sessionStorage.removeItem(LOG_KEY);
     consoleEl.innerHTML = '';
     log(t('debug.ready'));
   });
 
-  log(t('debug.ready'));
+  const history = loadHistory();
+  if (history.length) {
+    history.forEach(renderLine);
+    consoleEl.scrollTop = consoleEl.scrollHeight;
+  } else {
+    log(t('debug.ready'));
+  }
   if (!window.PublicKeyCredential) {
     log(t('js.not_supported'), 'error');
   }

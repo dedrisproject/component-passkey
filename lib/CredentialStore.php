@@ -40,6 +40,16 @@ final class CredentialStore
         $this->write($all);
     }
 
+    /** True if the storage file (or its directory) can be written by PHP. */
+    public function isWritable(): bool
+    {
+        if (is_file($this->file)) {
+            return is_writable($this->file);
+        }
+        $dir = dirname($this->file);
+        return is_dir($dir) ? is_writable($dir) : is_writable(dirname($dir));
+    }
+
     public function delete(string $credentialId): bool
     {
         $all = $this->all();
@@ -54,13 +64,19 @@ final class CredentialStore
     private function write(array $all): void
     {
         $dir = dirname($this->file);
-        if (!is_dir($dir)) {
-            mkdir($dir, 0775, true);
+        if (!is_dir($dir) && !@mkdir($dir, 0775, true)) {
+            throw new RuntimeException("Cannot create storage directory '{$dir}' — check filesystem permissions");
         }
-        file_put_contents(
+        $written = @file_put_contents(
             $this->file,
             json_encode($all, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES),
             LOCK_EX
         );
+        if ($written === false) {
+            throw new RuntimeException(
+                "Cannot write '{$this->file}' — make it writable by the web server "
+                . "(e.g. chmod 775 " . dirname($this->file) . ")"
+            );
+        }
     }
 }
